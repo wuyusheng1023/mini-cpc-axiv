@@ -2,6 +2,17 @@ version: "3"
 
 services:
 
+  worker:
+    build: ./worker
+    depends_on:
+      - postgres
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_HOST=postgres
+      - PYTHONDONTWRITEBYTECODE=1
+    command: python worker.py
+
   postgres:
     image: postgres:13.2
     environment:
