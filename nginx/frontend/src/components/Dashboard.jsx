@@ -16,23 +16,23 @@ import useInterval from '../hooks/useInterval.jsx';
 
 export default function Dashboard() {
 
+  const url = 'http://localhost/api/data';
+
   const [running, setRunningg] = useState(false);
   const [warning, setWarning] = useState(false);
   const [error, setError] = useState(false);
-  const [data, setData] = useState(
-    // mock data
-    {
-      temp_sat: 40,
-      temp_con: 20,
-      temp_opt: 42,
-      flow: 200,
-      conc: 1000,
-    }
-  );
+  const [data, setData] = useState();
 
   useInterval(() => {
-    console.log('hello');
+    fetchData(url);
   }, running ? 1000 : null);
+
+  const fetchData = url => {
+    fetch(url)
+      .then(res => res.json())
+      .then(setData)
+      .catch(console.error);
+  };
 
   const onChangeRunning = checked => {
     setRunningg(checked);
@@ -59,49 +59,50 @@ export default function Dashboard() {
 
         {
           !running ? null :
-            <>
-              <h1 style={{ margin:10, padding:10, backgroundColor: "WhiteSmoke" }}>
-                <p style={{ fontSize: 35, display: "inline" }}>{data['conc'].toPrecision(3)}</p>
-                <span>&nbsp;</span>
-                <p style={{ fontSize: 20, display: "inline" }}>#/cm<sup>3</sup></p>
-              </h1>
+            !data ? null:
+              <>
+                <h1 style={{ margin:10, padding:10, backgroundColor: "WhiteSmoke" }}>
+                  <p style={{ fontSize: 35, display: "inline" }}>{data['conc'].toPrecision(3)}</p>
+                  <span>&nbsp;</span>
+                  <p style={{ fontSize: 20, display: "inline" }}>#/cm<sup>3</sup></p>
+                </h1>
 
-              <Row>
-                <Col span={6} offset={2}>
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={['temp_sat', 'temp_con', 'temp_opt', 'flow']}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
-                  />
-                </Col>
+                <Row>
+                  <Col span={6} offset={2}>
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={['temp_sat', 'temp_con', 'temp_opt', 'flow']}
+                      renderItem={item => (<List.Item>{item}</List.Item>)}
+                    />
+                  </Col>
 
-                <Col span={6} offset={2}>
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={[
-                      data['temp_sat'].toFixed(2),
-                      data['temp_con'].toFixed(2),
-                      data['temp_opt'].toFixed(2),
-                      data['flow'].toFixed(1),
-                    ]}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
-                  />
-                </Col>
+                  <Col span={6} offset={2}>
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={[
+                        data['temp_sat'].toFixed(2),
+                        data['temp_con'].toFixed(2),
+                        data['temp_opt'].toFixed(2),
+                        data['flow'].toFixed(1),
+                      ]}
+                      renderItem={item => (<List.Item>{item}</List.Item>)}
+                    />
+                  </Col>
 
-                <Col span={6} offset={2}>
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={[
-                      <text><sup>o</sup>C</text>,
-                      <text><sup>o</sup>C</text>,
-                      <text><sup>o</sup>C</text>,
-                      <text>ml/min</text>,
-                    ]}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
-                  />
-                </Col>
-              </Row>
-            </>            
+                  <Col span={6} offset={2}>
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={[
+                        <text><sup>o</sup>C</text>,
+                        <text><sup>o</sup>C</text>,
+                        <text><sup>o</sup>C</text>,
+                        <text>ml/min</text>,
+                      ]}
+                      renderItem={item => (<List.Item>{item}</List.Item>)}
+                    />
+                  </Col>
+                </Row>
+              </>            
         }
 
 
