@@ -11,6 +11,8 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 
+import TimeSeriesChart from './TimeSeriesChart.jsx';
+
 import useInterval from '../hooks/useInterval.jsx';
 
 
@@ -114,9 +116,10 @@ export default function Dashboard() {
               nimi_CPC by University of Helsinki
             </h2>
             :
-            <>
-              <h1>Time Series Plot</h1>
-            </>
+            // !data ? null :
+              <>
+                <TimeSeriesChart data={data}/>
+              </>
         }
       </Col>
     </Row>
