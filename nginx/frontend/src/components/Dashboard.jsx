@@ -11,6 +11,8 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 
+import useInterval from '../hooks/useInterval.jsx';
+
 
 export default function Dashboard() {
 
@@ -27,6 +29,10 @@ export default function Dashboard() {
       conc: 1000,
     }
   );
+
+  useInterval(() => {
+    console.log('hello');
+  }, running ? 1000 : null);
 
   const onChangeRunning = checked => {
     setRunningg(checked);
