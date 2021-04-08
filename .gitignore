@@ -1,1 +1,4 @@
 playground/
+venv/
+.vscode/
+__pycache__/
