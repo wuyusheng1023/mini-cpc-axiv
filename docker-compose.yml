@@ -2,17 +2,24 @@ version: "3"
 
 services:
 
-  backend:
-    build: ./backend
-    ports:
-      - 5000:5000
-
   nginx:
     build: ./nginx
     depends_on:
       - backend
     ports: 
       - 80:80
+
+  backend:
+    build: ./backend
+    depends_on:
+      - postgres
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_HOST=postgres
+      - PYTHONDONTWRITEBYTECODE=1
+    ports:
+      - 5000:5000
 
   worker:
     build: ./worker

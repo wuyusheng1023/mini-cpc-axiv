@@ -4,7 +4,7 @@ COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
 RUN mkdir -p /app
-COPY app.py /app/
+COPY /app/ /app/
 
 WORKDIR /app
 
